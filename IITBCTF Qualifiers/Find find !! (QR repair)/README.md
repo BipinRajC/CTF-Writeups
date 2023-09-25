@@ -9,7 +9,7 @@
 >
 > Author: ravenroy
 >
->[`cinebench.png`](cinebench.png)
+>[`cinebench.png`](cinebench.PNG)
 
 Tags: _Miscellaneous_
 
@@ -23,12 +23,12 @@ New project -> new blank QR code -> select 25x25(ver 2) and module size 15px
 
 Now looking at the png fill out the pixels with `black` and `white` both `manually` and on doing so we get : 
 
-![Alt text](./images/iitb_QR1.png)
+![Alt text](./images/iitbQR1.PNG)
 Note - grey blocks means pixels are unknown
 
 Now go to Tools -> Extract QR information
 
-![Alt text](./images/iitb_QR2.png)
+![Alt text](./images/iitbQR2.png)
 
 In final decoded string we can see the flag obtained
 
