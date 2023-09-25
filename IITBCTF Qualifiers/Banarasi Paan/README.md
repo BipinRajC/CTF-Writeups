@@ -12,7 +12,7 @@
 >
 >Author: Jatin Singhal, Shiwani Mishra
 
->[Catch_Me_If_You_Can.txt](./images/Catch_Me_If_You_Can.txt)
+>[Catch_Me_If_You_Can.txt](./assets/Catch_Me_If_You_Can.txt)
 
 Tags: _Miscellaneous_
 
@@ -21,13 +21,13 @@ Tags: _Miscellaneous_
 The given txt file's contents looks similar to an [`esoteric language`](https://en.wikipedia.org/wiki/Esoteric_programming_language)
 called `Brainfuck cipher` which can be decoded from [`here`](https://www.dcode.fr/brainfuck-language)
 
-![Alt text](images/paan1.PNG)
+![Alt text](assets/paan1.PNG)
 
 we get a URL - `https://urlzs.com/FbD4S`
 
 on opening the URL we see 
 
-![Alt text](images/paan2.PNG)
+![Alt text](assets/paan2.PNG)
 
 Doing `ROT13` on `XRL VF PUBE` we get output saying `KEY IS CHOR`
 
@@ -35,19 +35,19 @@ Now we tried using the key `CHOR` and doing `Vigenere decode` on the link given 
 
 We do `vigenere decode` of the paragraph using [Cyberchef](https://gchq.github.io/CyberChef/) and given with the key `CHOR` but we still get an output like this
 
-![Alt text](images/paan3.PNG)
+![Alt text](assets/paan3.PNG)
 
 Now since there is only 2 letters `N` and `O` we can try comparing them to binary's `1` and `0` , so now using cyberchef again we can replace `N` with `0` and `O` with `1` and then convert binary to text 
 
-![Alt text](images/paan4.PNG)
+![Alt text](assets/paan4.PNG)
 
 we get coordinates in google map as `19.09817945854717, 72.82747712554809` and plug it in google maps and go to street view to find name of paan shop.
 
-![Alt text](images/paan5.PNG)
+![Alt text](assets/paan5.PNG)
 
 we can just see the name of the paan shop `MISHRA` paan shop so voila we have our key to decode the encrypted link given
 
-on doing vigenere decode again of `tblwj://rn.oq/1cpub` using key `MISHRA` we get output as `https://rb.gy/1vyup` and on opening it we get [pcapng file](./images/PCAP_WHAT___.pcapng) which on opening with `Wireshark` and navigating through streams we can see 
+on doing vigenere decode again of `tblwj://rn.oq/1cpub` using key `MISHRA` we get output as `https://rb.gy/1vyup` and on opening it we get [pcapng file](./assets/PCAP_WHAT___.pcapng) which on opening with `Wireshark` and navigating through streams we can see 
 ```
 Text 1 - hp/./o
 Text 2 - ts/lSc
@@ -61,7 +61,7 @@ Now we unjumble and we already know link should start with `https://` so on putt
 
 Now we tried converting from binary to text but it did not work, but then we thought of `Morse code` and replace `1` with `_` and `0` with `.` and then try decoding with cyberchef itself 
 
-![Alt text](images/paan6.PNG)
+![Alt text](assets/paan6.PNG)
 
 AND FINALLY WE HAVE OUR FLAG AFTER AN EXHILARATING CHASE OF THE NOTORIUS HACKER
 
