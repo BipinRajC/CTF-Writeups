@@ -29,10 +29,8 @@ Note - grey blocks means pixels are unknown
 
 Now go to Tools -> Extract QR information
 
-![Alt text](./assets/iitbQR2.png)
+![Alt text](.\assets\iitbQR2.png)
 
 In final decoded string we can see the flag obtained
 
 FLAG : `iitbCTF{Shakti_PR0cessOr}`
-
-![Alt text](https://cdn.discordapp.com/attachments/705099697383014481/1155992219975692288/IMG-20230926-WA0001.jpg)
