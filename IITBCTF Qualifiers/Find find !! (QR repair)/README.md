@@ -34,3 +34,5 @@ Now go to Tools -> Extract QR information
 In final decoded string we can see the flag obtained
 
 FLAG : `iitbCTF{Shakti_PR0cessOr}`
+
+![Alt text](https://cdn.discordapp.com/attachments/705099697383014481/1155992219975692288/IMG-20230926-WA0001.jpg)
