@@ -29,7 +29,7 @@ Note - grey blocks means pixels are unknown
 
 Now go to Tools -> Extract QR information
 
-![Alt text](.\assets\iitbQR2.png)
+![Alt text](./assets/iitbQR2.png)
 
 In final decoded string we can see the flag obtained
 

@@ -66,5 +66,3 @@ Now we tried converting from binary to text but it did not work, but then we tho
 AND FINALLY WE HAVE OUR FLAG AFTER AN EXHILARATING CHASE OF THE NOTORIUS HACKER
 
 FLAG - `iitbCTF{Y0U_R3A11Y_T40UG4T_Y0U_C@N_C@TC4_M3}`
-
-
