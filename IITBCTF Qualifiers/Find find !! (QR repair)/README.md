@@ -34,3 +34,4 @@ Now go to Tools -> Extract QR information
 In final decoded string we can see the flag obtained
 
 FLAG : `iitbCTF{Shakti_PR0cessOr}`
+
