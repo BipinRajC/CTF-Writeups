@@ -16,7 +16,8 @@ bq cr di ej kw mt os px uz gh
 cipher - mcwjaqo{s3zc4l_j3nkp0_symz34aoyx3?}
 ```
 using this tool [enigma machine decoder](https://cryptii.com/pipes/enigma-machine) , we can get the flag 
-![[enigma.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/dbcaf096-c383-4bfa-8706-0bdddf3781f8)
+
 > FLAG - **rvcectf{g3rm4n_t3chn0_unbr34kabl3?}**
 ---
 ### _2. Art of Predictability_
@@ -24,7 +25,8 @@ using this tool [enigma machine decoder](https://cryptii.com/pipes/enigma-machin
 So from looking at the description, the keywords being `predictability`, `pseudo-randomness` and `discontinuous piecewise linear equtions`  
 All roads lead to _Linear Congruential Generator (LCG)_ algorithm 
 It is basically a method to predict random numbers in a sequence. It involves using a mathematical formula that produces a sequence of numbers. If you know some of the numbers in the sequence, you can guess or predict the next ones based on the formula.
-![[LCG1.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/93e526ab-8acf-45a1-a629-f03855ab2a33)
+
 from the given `chall.py` file, we have the output file for when the REDACTED string was the flag itself, so using these output files we must recover the flag by reverse engineering the LCG logic 
 here's the script to solve it (takes ~2mins for  `11th Gen Intel Core i7 processor`, GTX )
 ```py
@@ -66,11 +68,14 @@ To know more about it - refer to [this](https://en.wikipedia.org/wiki/Linear_con
 On doing `rot13` u get :
 `Pretty much nothing to say, just dive in man`
 It's a `java source file` with some simple logic
-![[rev1.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/dfe18c37-480c-4b72-a6e6-eda90544e0c7)
+
 - first, `xor` `knownEncryptedFlag` with key `09` 
-![[rev2.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/f3632492-02f3-479b-a2ed-371085e0742c)
+
 Now using this [cyberchef recipe](https://gchq.github.io/CyberChef/#recipe=From_Hex('Space')ROT13(true,true,false,1)From_Base64('A-Za-z0-9%2B/%3D',true,false)Reverse('Character')From_Base64('A-Za-z0-9%2B/%3D',true,false)&input=NEYgNTMgMzEgNTEgNTkgNjkgNDkgNTYgNjEgNTYgNEQgNkMgN0EgNDQgNjMgNkEgNjQgNDYgNEMgNzkgNTYgNDcgNkUgMzEgNEMgNkMgNDkgMzQgNTQgNTUgNjcgNTkgNjQgNTQgMzUgNDQgNTggMzMgNTggMzUgNTEgNkIgNkYgMzUgNTEgNkEgNjMgN0EgNjMgNTUgNDkgNDQgNTkgNDcgNkYgMzAgNEMgMzEgNkYgNkUgNjQgNDYgMzEgN0E) , we can get the flag with the above result as input 
-![[rev3.png]]
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/481c3575-1eb2-48af-b332-6e0ae2229a3a)
 
 >FLAG - **flag{st4ndard_op3rat1ons_w1th_rev}**
 ---
@@ -82,7 +87,8 @@ hints from the description were :
 - `worlds collide` - hash collision
 - `paths we trace` - look for endpoints to discover the creds leak
 So, we run a `gobuster` scan with common wordlist of URL endpoints.
-![[web1.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/0b1e8b3f-83dc-4267-9dc9-def41d1374ed)
+
 Well, unfortunately even `.git` was exposed 🗿
 and all of you took advantage of that and found the flag through `server.js` but here's the intended solve :
 so we can see that the `/script` endpoint gives `200 OK` status, so head over to `https://confidential-leak.rvcechalls.xyz/script` and we get :
@@ -158,13 +164,16 @@ Finished
 ===============================================================
 ```
 On visiting `/protected` endpoint, it says `Looks like you fell to the tyranny of Messmer's flame` , so let's keep this info aside for now.
-Open it up in burpsuite, in response we can see the `Authorization bearer token` ![[brutus1.png]]
+Open it up in burpsuite, in response we can see the `Authorization bearer token`
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/775a501c-a6fd-45aa-8600-1dcc1e3b4797)
+
 ```
 Authorization bearer:
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzg3ODYzMSwianRpIjoiMmIyNDQ3OGEtNTUyYi00NTkyLWEwODctM2I2NjkzZWVhNWM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MCwibmJmIjoxNzE3ODc4NjMxLCJjc3JmIjoiZTMxMWMxZmEtM2E1ZC00MGI4LThlZDYtNGE1ZDkyZDg4ZDNlIiwiZXhwIjoxNzE3ODc5NTMxfQ.21sPV_2hO9oj4WD5xf9rYFk9ZjILzKqOl3Z9Mbn28zc
 ```
 Let's decode this in [https://jwt.io/](https://jwt.io/) 
-![[brutus2.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/03d7e15b-274d-4850-85f9-0d6679b270fa)
+
 Now try a few things, and submit token to `/protected` endpoint should be the thought process
 - `fresh: false` to `fresh: true` - doesn't work
 - `sub: 0` to `sub: 1` - works
@@ -181,9 +190,11 @@ Total attempts: 20000
 Now updated token consists of :
 -  `sub: 0` to `sub: 1` - ✅
 -  secret key = `1337` - ✅
-![[brutus3.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/d3046f3a-ca7a-4ff2-b1ad-efeb39f47e07)
+
 Now just add the updated token as header to requests on `/protected` endpoint and see response, the flag will be there
-![[brutus4.png]]
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/373ce2ac-d04e-41f5-9aa7-98f10d6c00eb)
 
 > FLAG - **flag{M35m3r_1mpA13D}**
 ---
@@ -240,7 +251,8 @@ We have a hazy looking image with a lot of noise, the way to solve is `stereogra
 Now theres 2 ways - through `stegsolve`, go to stereogram solver and move the offset till `90` OR through some random online `stereogram solver tool`
 
 We love making everything easy so let's choose online tool - [online tool](https://piellardj.github.io/stereogram-solver/) 
-![[noise.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/5ca5308f-c74d-4408-b095-268d286a981b)
+
 
 > FLAG - **flag{n0i5e_reV34l_Ftw}**
 ---
@@ -266,7 +278,8 @@ hint given was:
 You can find the download link for 3.30 version here - [3.30 install link](https://portableapps.com/node/26847) 
 
 3 keys were given in description and they had to be entered in the same order for an optimum `hamming distance` and we would obtain the flag. 
-![[openpuff.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/b0008900-6b58-4f4a-9587-91f7452d0d36)
+
 
 >A = powerpuffgirls
    B = sugarspice
@@ -293,10 +306,12 @@ We're given a link to a `react app` where we can connect to our `crypto wallet` 
 
 But intended solve was:
 First we get some `eth` from - [sepolia ether faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) by entering our wallet address to suffice for the gas fees for deploying the smart contract.
-![[blockchain1.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/da51f5c9-39cf-4136-beea-e8b40c64ae4e)
+
 After successful deployment, it displays the `contract address`, now we head over to [sepolia testnet explorer](https://sepolia.etherscan.io/) and enter the address.
 There we get the most recent transaction hash with the timestamp, click on more details -> View input data -> View as UTF-8 
-![[blockchain2.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/ff23c360-8b42-4659-beb1-33a33b4f7901)
+
 Here, we can see the flag 
 >FLAG - **flag{4lway5_vi3w_data_1n_all_f0rmats_98098}**
 ----
