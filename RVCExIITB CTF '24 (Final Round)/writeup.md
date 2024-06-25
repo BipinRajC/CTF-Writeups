@@ -68,8 +68,11 @@ The entire challenge can be summed up in the last line tbh
 > `L's Secrets Buried Deep within.` - indicating `LSB` and deep within indicating `deepsound` which is a famous stego tool.
 
 In order to extract the hidden files from deepsound, we need a password and for the password we need a password hash to decrypt and crack. <br>
-![[Pasted image 20240623234957.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/8bad75e4-98e4-4152-b409-2474d19be7a9) <br>
+
 so with the password `shinigamiryuk`, we extract the hidden files <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/9e45012f-1c02-4b2c-a122-730094cb98d6) <br>
+
 ![[Pasted image 20240623235125.png]]
 we get 3 secret audio files and we will do more audio recon on them
 - `secret1.wav` sounds like a phone number being typed and that indicates `DTMF tones`, so use [DTMF decoder](https://dtmf.netlify.app/) to decode to decimal, we get 
