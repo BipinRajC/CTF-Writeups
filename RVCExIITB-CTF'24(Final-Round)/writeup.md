@@ -513,8 +513,9 @@ n = int('0b'+digest,2)
 print(n.to_bytes((n.bit_length() + 7) // 8, 'big').decode('utf-8', errors='ignore'))
 ```
 <br>
-Im too lazy to type an explanation of code so here's a snippet from chatgpt :
-![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/cce006c5-bdd9-4f04-8c47-7b487fa5c7c9)
+Im too lazy to type an explanation of code so here's a snippet from chatgpt : <br>
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/76d2c9df-b7f6-4e1f-b228-6d68666f9f9d)
 
 ```
 Output:
