@@ -73,15 +73,15 @@ In order to extract the hidden files from deepsound, we need a password and for 
 so with the password `shinigamiryuk`, we extract the hidden files <br>
 ![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/9e45012f-1c02-4b2c-a122-730094cb98d6) <br>
 
-![[Pasted image 20240623235125.png]]
 we get 3 secret audio files and we will do more audio recon on them
 - `secret1.wav` sounds like a phone number being typed and that indicates `DTMF tones`, so use [DTMF decoder](https://dtmf.netlify.app/) to decode to decimal, we get 
 > `Decoded: 2306925064908087525729748307260966546393425247`
  
  then convert it to hex and further convert hex to ascii text using [rapidtables converter](https://www.rapidtables.com/convert/number/decimal-to-hex.html) , we get 1 part of the flag as `gr3t4e5t_det3ct1ve_`
 
-  - `secret2.wav` was to be opened up in `audacity` or `Sonic Visualizer` to look at it's `spectogram` to get another part of the flag
-![[Pasted image 20240624001159.png]]
+  - `secret2.wav` was to be opened up in `audacity` or `Sonic Visualizer` to look at it's `spectogram` to get another part of the flag <br>
+  ![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/761ff886-04d1-44a2-88c9-a54f7bba6188) <br>
+
 another part of flag - `0n_Pl4net_3arth}`
 
 - `secret3.wav` is LSB encoded and we can try different tools like stegolsb, wavsteg and so on and seeing the hint it is definitely `wavsteg` <br>
@@ -116,27 +116,29 @@ If your answer was `grep with flag format` - you're right!
 
 `grep -arni "=="` --> this gives us a `base64` string which on decoding leads us to a [drive link](https://drive.google.com/drive/folders/1y3iPURcozDEnWwmFDaOlBTUUNv5YS_u-) 
 it contains a `jpg image` and `info doc` which had a `hidden key` which could be visible by simply doing `ctrl+A` 
-`KEY - keyishidd3n` 
+`KEY - keyishidd3n` <br>
+
 Now we perform recon on the image with exiftool, strings, binwalk and so on..
-exiftool reveals `It's here somewhere, find it.` but in base64
-since we have a key, let's try `steghide` 
-`steghide --extract -sf transmission.jpg` with password as `keyishidd3n` and it gives us `secret.txt` whose content is 
+exiftool reveals `It's here somewhere, find it.` but in base64 <br>
+since we have a key, let's try `steghide` <br>
+`steghide --extract -sf transmission.jpg` with password as `keyishidd3n` and it gives us `secret.txt` whose content is <br> 
 `/d/1hK3tV5PPtdOwUujHOqQOgl1NI015GpNU/` - this looks awfully similar to URL endpoint of drive links so we construct the URL as 
 ```
 https://drive.google.com/file/d/1hK3tV5PPtdOwUujHOqQOgl1NI015GpNU/
 ```
-Now we get a locked zip file, in order to unlock it - we use `john the ripper`
+Now we get a locked zip file, in order to unlock it - we use `john the ripper` <br>
 > `zip2john agentnotebook.zip > hash`
 > `john hash` - this cracks the hash and gives us the password as `topgun`
 
-Now on extracting the _important.txt_ , the word `HISTORY` is in caps and the `.git` folder should have been a giveaway pointing towards looking at the `git commit history`
-> `git log` - this shows all the commits with its hash, author name, timestamp
-> `git reflog` - brief of the above, only what's needed, the hash
-> `git show f0c2f2e91db329896a643b70ef43e2803849b2cd` - hash of commit3
-> `git show dd427cea5c4a24ad28d352a1391b7a7cfcf457ec` - hash of commit4
-> `git show 4fda7dec868ba8a29700a30bac03b90ede27be9b` - hash of commit5
->
->we get the flag in 3 parts in the commits 3,4 and 5
+Now on extracting the _important.txt_ , the word `HISTORY` is in caps and the `.git` folder should have been a giveaway pointing towards looking at the `git commit history` <br>
+> `git log` - this shows all the commits with its hash, author name, timestamp <br>
+> `git reflog` - brief of the above, only what's needed, the hash <br>
+> `git show f0c2f2e91db329896a643b70ef43e2803849b2cd` - hash of commit3 <br>
+> `git show dd427cea5c4a24ad28d352a1391b7a7cfcf457ec` - hash of commit4 <br>
+> `git show 4fda7dec868ba8a29700a30bac03b90ede27be9b` - hash of commit5 <br>
+
+we get the flag in 3 parts in the commits 3,4 and 5 <br>
+
 >FLAG - **flag{th3_j0urn3y_t0_b3_a_R4W_ageNt_i5_n0T_aN_ea5Y_on3}**
 ---
 
@@ -145,18 +147,21 @@ Now on extracting the _important.txt_ , the word `HISTORY` is in caps and the `.
 ##### _Category - Miscellaneous
 >Author - Bipin Raj
 
-We are given an encrypted file which is a `mountable disk` and `Veracrypt` is mentioned, it is a free open-source utility for on-the-fly encryption (mainly for disks and partitions) and partial password is given as well - `shady****1`
-Running `strings` doesnt give anything, we have got to decrypt it but where's the hash? 
-[finding hash of veracrypt encrypted volumes](https://hashcat.net/wiki/doku.php?id=frequently_asked_questions#how_do_i_extract_the_hashes_from_truecrypt_volumes) - this tells us how we can obtain the hash of the encrypted disk
-In this case we have just a file, a non-booting partition so we choose option 3 
-`3.in all other cases (files, non-booting partitions) you need the first 512 Bytes of the file or partition.`
+We are given an encrypted file which is a `mountable disk` and `Veracrypt` is mentioned, it is a free open-source utility for on-the-fly encryption (mainly for disks and partitions) and partial password is given as well - `shady****1` <br>
 
-So using `dd` (The `dd` command in Linux is **a robust tool that can be used to copy and convert files**) we can extract the first 512 bytes and of the encrypted file and use it as the hash
+Running `strings` doesnt give anything, we have got to decrypt it but where's the hash? <br>
+
+[finding hash of veracrypt encrypted volumes](https://hashcat.net/wiki/doku.php?id=frequently_asked_questions#how_do_i_extract_the_hashes_from_truecrypt_volumes) - this tells us how we can obtain the hash of the encrypted disk <br>
+In this case we have just a file, a non-booting partition so we choose option 3 <br>
+
+`3.in all other cases (files, non-booting partitions) you need the first 512 Bytes of the file or partition.` <br>
+
+So using `dd` (The `dd` command in Linux is **a robust tool that can be used to copy and convert files**) we can extract the first 512 bytes and of the encrypted file and use it as the hash <br>
 ```
 dd if=encrypted of=encrypted_hash bs=512 count=1
 ``` 
-this command creates a file `encrypted_hash` with bs=512 (indicating bytesize) , count=1 (indicating it should be copied as 1 block of data)
-Now that we have the hash, we turn to the advanced password cracking tool - [hashcat](https://hashcat.net/hashcat/) , on the [hash example page](https://hashcat.net/wiki/doku.php?id=example_hashes)  we can see the different kinds of hashes that hashcat can decrypt and we find `13722 - VeraCrypt PBKDF2-HMAC-SHA512 + AES-Twofish (legacy)` 
+this command creates a file `encrypted_hash` with bs=512 (indicating bytesize) , count=1 (indicating it should be copied as 1 block of data) <br>
+Now that we have the hash, we turn to the advanced password cracking tool - [hashcat](https://hashcat.net/hashcat/) , on the [hash example page](https://hashcat.net/wiki/doku.php?id=example_hashes)  we can see the different kinds of hashes that hashcat can decrypt and we find `13722 - VeraCrypt PBKDF2-HMAC-SHA512 + AES-Twofish (legacy)` <br>
 ```
 ──(bipinraj㉿kali)-[~/Downloads]
 └─$ hashcat -a 3 -w 1 -m 13722 encrypted_hash shady?d?d?d?d1
