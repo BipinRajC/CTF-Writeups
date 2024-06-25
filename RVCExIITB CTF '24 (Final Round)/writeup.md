@@ -4,21 +4,32 @@
 > Author - Bipin Raj
 
 We're given a `7z` file which contains `snack.jpg` and a text file both indicating to look at the bytes and from the challenge name as well, it hints at HxD editor, so we open it up in HxD to look for some clues <br>
-![[Pasted image 20240606231039.png]]<br>We can see these sus files in the bytes along with `PK` at the end and `PK` usually indicates `zip files` , so we do `ctrl+F` and search for zip file magic header - `50 4B 03`
-![[Pasted image 20240606231446.png]]Now we extract all the bytes after the highlighted `PK` and create a new file and save it with `.zip` extension <br> 
-![[Pasted image 20240606231726.png]] <br> 
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/2c6b0353-c1e0-4799-9841-c96a1cb02954)
+<br>
+We can see these sus files in the bytes along with `PK` at the end and `PK` usually indicates `zip files` , so we do `ctrl+F` and search for zip file magic header - `50 4B 03` <br>
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/d9a52b48-22ea-4dac-a114-a9da0d3ea10c)
+
+Now we extract all the bytes after the highlighted `PK` and create a new file and save it with `.zip` extension <br> 
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/382a6a07-5e48-4fe9-9add-4acd13a94143)
+ <br> 
+
 on opening the zip file, we get a `lorem.docx` and `readme.txt` file which has some false positive whitespaces in it along with a description indicating we have to either fix the file or is it even fixable. 
-We try opening lorem.docx but it seems to be corrupted, doing some research, you can find out that .docx files are actually just .zip files consisting of various elements like `xml entities` and so on, so we rename it to lorem.zip
+We try opening lorem.docx but it seems to be corrupted, doing some research, you can find out that .docx files are actually just .zip files consisting of various elements like `xml entities` and so on, so we rename it to lorem.zip <br>
 We don't try fixing the file, instead we look for some sus stuff inside the structure of the file and we find :
-`<!-- treatfortheyes:katb.in/macerokahes -->` in `styles.xml`
+`<!-- treatfortheyes:katb.in/macerokahes -->` in `styles.xml` <br>
+
 In that link we get a huge base64 string, trying to decode that 
 [cyberchef recipe](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,false)Render_Image('Raw')) , we get an image saying `flaggity flag down here` is down here <br> 
-![[Pasted image 20240606233049.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/afa1c2da-7d71-4372-8f62-3c7c50af1f0a)
 
 refer this [article](https://cyberhacktics.com/hiding-information-by-changing-an-images-height/) to learn how to increase the dimensons of the image and view the remaining part of the image.
-`FF C0 00 11 08 01` --> `FF C0 00 11 05 02` gives us :
-![[Pasted image 20240606233428.png]]now change it to `FF C0 00 11 05 03` and we can see the flag 
-![[Pasted image 20240606233541.png]]
+`FF C0 00 11 08 01` --> `FF C0 00 11 05 02` gives us : <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/46851e66-d9a9-4a2e-8ffe-8a386b6351bb)
+now change it to `FF C0 00 11 05 03` and we can see the flag <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/70f7f99d-8eba-43bd-a9da-78d1964f532f)
 
 > FLAG - **flag{we_g0t_iM4g3s_b64_bef0re_gTa6??}**
 ---
