@@ -382,13 +382,19 @@ Hints
 - CITRIX CTX ?
 ```
 First we have `chall.txt` <br>
+
 ```
 ie nkesa kyifciati'd "niwiea pxvanl," sca aifcsc pitpya xz cayy id nadifeksan zxt ztkrndsatd ken id drjniwinan iesx sae nispcad, akpc ureidcief k nizzataes slua xz napais. oiscie scid pitpya, dieeatd drzzat wktixrd sxtvaesd, drpc kd jaief drjvatfan ie jxiyief uispc xt jaief ociuuan jl navxed, tazyapsief sca pxttrus ken napaiszry eksrta xz scait died.cssud://hksj.ie/amibajatxyx
 ```
+
 It looks like some alphabetic substitution, many of them did monoalphabetic substitution on `dcode.fr` and got the words right but link wrong, cuz link has got more `entropy` than words and whilst `dcode.fr` does a good job with words, it wouldn't get the link right.  <br>
-Enter the legendary frequency analysis tool - [Quipqiup](https://www.quipqiup.com/)
-<br>![[Pasted image 20240625021447.png]]
+
+Enter the legendary frequency analysis tool - [Quipqiup](https://www.quipqiup.com/) <br>
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/dcc92288-830b-4f29-a6fb-47dcfe03e226)
+
 By simple google search, the decoded description points towards `malbolge` language which is named after 8th circle of hell in Dante's Inferno <br>
+
 so paste the contents of `https://katb.in/exijeberolo` in [Malbolge Interpreter](https://malbolge.doleczek.pl/)<br>
 On decoding it gives:
 ```
@@ -396,13 +402,17 @@ In a perpetually gray town called citrixia, Elias led a monotonous, purposeless 
 what is Elias?
 https://katb.in/urelegoyaxu
 ```
-What is Elias? He's a Nihilist - now use [Nihilist cipher decoder](https://cryptii.com/pipes/nihilist-cipher) to decode the contents of 2nd katbin link with key as `citrixia` which is the name of the city 
+What is Elias? He's a Nihilist - now use [Nihilist cipher decoder](https://cryptii.com/pipes/nihilist-cipher) to decode the contents of 2nd katbin link with key as `citrixia` which is the name of the city <br>
+
 > Because it said, **the key to it all is the name of the city**
 
-![[Pasted image 20240625022246.png]]
-construct the next katbin link - `https://katb.in/ugoqikumaxe` 
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/1c507d62-7e27-472c-92a3-d82c865280a6)
+
+construct the next katbin link - `https://katb.in/ugoqikumaxe` <br>
+
 and now decode that using [CITRIX CTX 1 cipher decoder](https://asecuritysite.com/cipher/citrix)  <br>
-![[Pasted image 20240626010934.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/ddd369d1-e068-4e30-89b1-ffc347f1dbd7)
+
 
 > FLAG - **flag{3ncrypted_c0mm5_fr0m_a_5ecure_w0rld}**
 ---
@@ -420,11 +430,18 @@ X X I I X Z ZX ZX X ZX I ZX X ZX X I I Z I I X X I X X ZX X X X Z I X X Z ZX Z X
 ```
 
 So how do we get started, looking at `X Z I` string can be intimidating, but let's approach this easily, first off google is your friend so search it up in google but it gives some weird stuff so then go for chatgpt (dont even have to tell you lol) <br>
-![[Screenshot 2024-06-26 012521.png]]
+
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/6f7c55b1-4758-4f52-9908-90232198a6ff) <br>
+
 So now we know that it's something to do with the `Quantum gates` and X indicates Pauli-X gate , Z is Pauli-Z gate , I is identity gate and so on. <br>
+
 Many of you must've come across this writeup on ctftime as well - [X-MAS CTF 2019](https://ctftime.org/writeup/17535) and there is a given decryption script there, except when u try to use that, it doesnt work, because it's slightly different from how I had encoded it. <br>
-So if you could understand the difference then it could be solved easily, difference was the way it had been encoded and decrypted in the writeup using the `genesis state` and going forward to next states in the iteration for the entire string. <br> 
-But here, what had to be done was instead of using genesis state and going to further successive states, just reset the `init1` and `init2` variables _**inside**_ the loop and now for every single iteration it resets and decrypts correctly. So actually the genesis state doesn't even have to be used. It was still given though cuz there are probably other ways to decrypt using genesis state but a different slightly complex logic.
+
+So if you could understand the difference then it could be solved easily, difference was the way it had been encoded and decrypted in the writeup using the `genesis state` and going forward to next states in the iteration for the entire string. <br>
+
+But here, what had to be done was instead of using genesis state and going to further successive states, just reset the `init1` and `init2` variables _**inside**_ the loop and now for every single iteration it resets and decrypts correctly. <br>
+
+So actually the genesis state doesn't even have to be used. It was still given though cuz there are probably other ways to decrypt using genesis state but a different slightly complex logic. <br>
 
 Here's my decryption script, but playing around with chatGPT with the right prompts after understanding what it revolves around could probably give you another solution. <br>
 ```py
@@ -497,7 +514,7 @@ print(n.to_bytes((n.bit_length() + 7) // 8, 'big').decode('utf-8', errors='ignor
 ```
 <br>
 Im too lazy to type an explanation of code so here's a snippet from chatgpt :
-![[Pasted image 20240626015023.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/cce006c5-bdd9-4f04-8c47-7b487fa5c7c9)
 
 ```
 Output:
