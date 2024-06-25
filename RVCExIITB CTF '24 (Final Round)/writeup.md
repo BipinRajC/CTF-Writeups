@@ -42,7 +42,8 @@ Right off the bat, we can see the image and bottom right is kinda corrupted so d
 looking at metadata, we can see base64 string `c2VjcmV0IGtleSAtIG5vbGFuJ3MgYmlydGhwbGFjZQ==` which converts to `secret key - nolan's birthplace` which is `Westminster` in london. <br>
 Now opening it up in hex editor :
 It starts with `FF D8` indicating that it's a `jpg` image, you can read more about image headers - [here](https://www.garykessler.net/library/file_sigs.html) , now we search for trailer of `jpg` which is `FF D9` <br>
-![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/62e03c27-8d2f-4bb0-b10c-84e00ea342c7) <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/96b51879-2d3e-48fb-a4bb-ca939c2558bd)
+<br>
 right after trailer bytes, we can see corrupted `png` bytes starting with magic header `89 50 4E 47` and so on, so extract these bytes and correct that critical chunks like `IHDR, IEND, IDAT` etc  <br>
 ![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/6f4e1b30-57bb-4791-91bb-66ec344057d7) <br>
 then rename it to `.png` file extension and then open it up, we get an image of a totem with the ciphertext <br>
@@ -71,7 +72,8 @@ In order to extract the hidden files from deepsound, we need a password and for 
 ![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/8bad75e4-98e4-4152-b409-2474d19be7a9) <br>
 
 so with the password `shinigamiryuk`, we extract the hidden files <br>
-![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/9e45012f-1c02-4b2c-a122-730094cb98d6) <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/b76c9860-b377-45bc-9dcc-54b5f27297ca)
+ <br>
 
 we get 3 secret audio files and we will do more audio recon on them
 - `secret1.wav` sounds like a phone number being typed and that indicates `DTMF tones`, so use [DTMF decoder](https://dtmf.netlify.app/) to decode to decimal, we get 
@@ -202,12 +204,12 @@ We can use [Cryptoji decoder](https://cryptoji.com/) with password as `emojis` a
 ##### _Catgeory - Stego_
 > Author - Bipin Raj
 
-Im sure a lot of you probably want to see this writeup, hope this enlightens you on this method of steganography ;)
-So, we have a binary file `rm` given to us and now first things first
-Running `strings` on the binary doesn't give anything solid, so we try to run it 
-`chmod +x rm`
-`./rm` - this binary works exactly like the linux command `rm` 
-in fact let's compare them :
+Im sure a lot of you probably want to see this writeup, hope this enlightens you on this method of steganography ;) <br>
+So, we have a binary file `rm` given to us and now first things first <br>
+Running `strings` on the binary doesn't give anything solid, so we try to run it <br> 
+`chmod +x rm` <br>
+`./rm` - this binary works exactly like the linux command `rm` <br> 
+in fact let's compare them : <br>
 ```py
 ┌──(bipinraj㉿kali)-[~/Desktop/CTF_Tools/steg86]
 └─$ file rm     
@@ -217,35 +219,41 @@ rm: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked,
 └─$ file /bin/rm
 /bin/rm: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e8b7e344eda821652030f20cd66139fba719927b, for GNU/Linux 3.2.0, stripped
 ```
-looks the same (even the checksum)
-let's compare the bytes by `diff <(hexdump -C /bin/rm) <(hexdump -C ./rm)`
+looks the same (even the checksum) <br>
+let's compare the bytes by doing `diff <(hexdump -C /bin/rm) <(hexdump -C ./rm)` <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/97885cbd-ccc5-4f4a-b222-4e44c921fbcc) <br>
 
-![[steg86.png]] 
-It looks like some kind of steganography, because some bytes![[steg86.png]]
-are changed, just like LSB steganography in images. But is there steganography for binaries?
-[steg86](https://github.com/woodruffw/steg86): _steg86 is a format-agnostic steganographic tool for x86 and AMD64 binaries._ 
-more about the working of it - [here](https://github.com/woodruffw/steg86?tab=readme-ov-file#theory-of-operation) 
-`./steg86 extract rm > flag.txt`
->FLAG - **rvcectf{1n5piR3d_bY_R1SV_b1n4ri3s_5te5aN0gr4pHy}**
+It looks like some kind of steganography, because some bytes are changed, just like LSB steganography in images. But is there steganography for binaries? <br>
+
+[steg86](https://github.com/woodruffw/steg86): _steg86 is a format-agnostic steganographic tool for x86 and AMD64 binaries._ <br>
+
+more about the working of it - [here](https://github.com/woodruffw/steg86?tab=readme-ov-file#theory-of-operation) <br>
+`./steg86 extract rm > flag.txt` <br>
+
+> FLAG - **rvcectf{1n5piR3d_bY_R1SV_b1n4ri3s_5te5aN0gr4pHy}**
 ---
+
 ### _7. Scroll of Destiny_
 ##### _Category - OSINT_
 > Author - Bipin Raj
 
 On doing reverse image search, we can conclude the image is related to  [Gallifreyan language](https://tardis.fandom.com/wiki/Gallifreyan_(language)) (mystic language of the Time Lords) , now we need to decode this and for that we need to know the rules of Circular Gallifreyan so by searching around we can find - [ultimate guide to gallifreyan](https://translationmatrix.tumblr.com/post/179867130691/the-ultimate-guide-to-circular-gallifreyan-in-all) and can do trial and error with the [gallifreyan decoder](https://adrian17.github.io/Gallifreyan/) and finally :
 
-![[gallifreyan1.png]] 
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/2ca11fa5-42d3-44df-9860-bfe0330252cd) <br>
+ 
 _Note : The circular patterns match up exactly and the lines arrangement do not matter. Sherman's Gallifreyan isn't a 1 to 1 translation to & from English, it's a one to many from english to Gallifreyan, a bit like how there are an infinite number of fonts for english, but you can still read them all the same_ 
 
 Now we look up `@skibidiboo` on instagram and find a post with a `pastebin` link and a question asking "Which ancient book does Dr Strange read for astral projection" - `vishanti`
 
 This leads to a drive link with an image of a temple 
-![[gallifreyan2.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/e7a2a6e1-030d-4ad2-b59a-4bd417e1625c)
 
-Seeing exact match - it leads us to [this website](https://www.walksworldwide.com/blog/filming-locations-doctor-strange-in-nepal) and now we know the name of the temple `swayambhunath` and with a simple google search of how many steps it takes to get from the main gate to the stupa of the temple, it says `365` 
+
+Seeing exact match - it leads us to [this website](https://www.walksworldwide.com/blog/filming-locations-doctor-strange-in-nepal) and now we know the name of the temple `swayambhunath` and with a simple google search of how many steps it takes to get from the main gate to the stupa of the temple, it says `365` <br>
  
 > FLAG - **flag{swayambhunath_365}**
 ---
+
 ### _8. Geoguessr Lite_
 ##### _Category - OSINT_
 >Author - Bipin Raj
@@ -254,11 +262,13 @@ Seeing exact match - it leads us to [this website](https://www.walksworldwide.co
   PS: communication is key.
 
 First thing that comes to mind is `Geosint`, starting off with our OG google reverse image search with google lens <br>
-![[reverse-image-search.png]]
+![reverse-image-search](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/b5d5e312-f4e5-4695-8533-dc4c008546e3) <br>
+
 keep adjusting the croppable part in such a way that you find Gaurav's X post
 https://twitter.com/gaurav_goyal27/status/474076303964909569
 
-![[Pasted image 20240625005658.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/6274ebd1-5d8f-4c42-9195-900d7e19caf9) <br>
+
 pastebin link - https://pastebin.com/xH8yhhGf <br>
 >Key takeaways from the tweet and description
 >- going to visit same place `NEXT YEAR same time` with friend kate
@@ -273,15 +283,18 @@ my friend kate sent me this, cant make out what it is, maybe ask her what it is.
 https://drive.google.com/file/d/1mTf_2Lo3hNK-IlpbsY1bGA8YHmkul4bz/view?usp=sharing
 ```
 maybe ask kate what it is? since it said kate sent me this, look at image metadata but unexpectedly author comment is `bipinrajc4604@gmail.com` , but we need kate's mail and send her a mail.<br>
+
 The reason author isnt kate but is `bipinrajc4604@gmail.com` you had to find out kate's mail merely by knowing my mail and how's that? That was the trick/main task of this challenge. <br>
-From key takeaways we know he will visit art of living again _**same time next year**_, so maybe we can look at his calendar and leak some private info if he hasn't properly set up google calendar like most people.
+
+From key takeaways we know he will visit art of living again _**same time next year**_, so maybe we can look at his calendar and leak some private info if he hasn't properly set up google calendar like most people. <br>
+
 Here's everything to read on how to do the next step - [google calendar OSINT](https://logicbomb.medium.com/ok-google-please-reveal-everyones-public-calendar-27523206f9ac) 
 ```
 google dork (advance search query) to use:
 https://calendar.google.com/calendar?cid=bipinrajc4604@gmail.com
 ```
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/3b28e276-845d-4a04-b127-0031f7c20e52)
 
-![[Pasted image 20240625011510.png]]
 go to `June 22, 2025` and we can see guest as `katelynsera@gmail.com` 
 
 > Only after hint was given people were able to figure out this much
@@ -290,8 +303,9 @@ go to `June 22, 2025` and we can see guest as `katelynsera@gmail.com`
 >- have i scheduled a public event with kate?
 
 For some reason many of yall kept finding different Gauravs and not the right one hence the above hint and the 2nd hint was direct giveaway. <br>
-So now mail `katelynsera@gmail.com` and we'd get a mail in reply :
-![[Pasted image 20240625012047.png]]
+
+So now mail `katelynsera@gmail.com` and we'd get a mail in reply :<br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/937c563d-62f4-4e92-b72c-1211b89fccaf)
 
 > FLAG - **flag{0h_ye4h_y0u_f1nally_got_me}**
 ---
@@ -347,8 +361,8 @@ Indeed is weird and whenever you see weird you think `esoteric language` and sta
 > - Coldplay is a `rock genre` band and `cold` somewhat indicates `stegsnow` 
 > - `Dylan` Beattie is creator of `Rockstar` programming language
 
-use this compiler - [Rockstar Programming Language](https://codewithrockstar.com/online)
-![[Pasted image 20240625015341.png]]
+use this compiler - [Rockstar Programming Language](https://codewithrockstar.com/online) <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/3f320112-99a7-492b-9c1d-5b28bef501ad)
 
 > FLAG - **flag{C01dp14YR0Ck5}**
 ---
