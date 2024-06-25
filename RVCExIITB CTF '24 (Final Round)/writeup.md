@@ -27,7 +27,7 @@ In that link we get a huge base64 string, trying to decode that
 
 refer this [article](https://cyberhacktics.com/hiding-information-by-changing-an-images-height/) to learn how to increase the dimensons of the image and view the remaining part of the image.
 `FF C0 00 11 08 01` --> `FF C0 00 11 05 02` gives us : <br>
-![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/46851e66-d9a9-4a2e-8ffe-8a386b6351bb)
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/46851e66-d9a9-4a2e-8ffe-8a386b6351bb) <br>
 now change it to `FF C0 00 11 05 03` and we can see the flag <br>
 ![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/70f7f99d-8eba-43bd-a9da-78d1964f532f)
 
@@ -38,16 +38,18 @@ now change it to `FF C0 00 11 05 03` and we can see the flag <br>
 ##### _Category - Forensics_
 > Author - Bipin Raj
 
-Right off the bat, we can see the image and bottom right is kinda corrupted so definitely something to do with the bytes.
+Right off the bat, we can see the image and bottom right is kinda corrupted so definitely something to do with the bytes. <br>
 looking at metadata, we can see base64 string `c2VjcmV0IGtleSAtIG5vbGFuJ3MgYmlydGhwbGFjZQ==` which converts to `secret key - nolan's birthplace` which is `Westminster` in london. <br>
 Now opening it up in hex editor :
 It starts with `FF D8` indicating that it's a `jpg` image, you can read more about image headers - [here](https://www.garykessler.net/library/file_sigs.html) , now we search for trailer of `jpg` which is `FF D9` <br>
-![[Pasted image 20240623222519.png]]  <br> right after trailer bytes, we can see corrupted `png` bytes starting with magic header `89 50 4E 47` and so on, so extract these bytes and correct that critical chunks like `IHDR, IEND, IDAT` etc  <br>
-![[Pasted image 20240623223038.png]] <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/62e03c27-8d2f-4bb0-b10c-84e00ea342c7) <br>
+right after trailer bytes, we can see corrupted `png` bytes starting with magic header `89 50 4E 47` and so on, so extract these bytes and correct that critical chunks like `IHDR, IEND, IDAT` etc  <br>
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/6f4e1b30-57bb-4791-91bb-66ec344057d7) <br>
 then rename it to `.png` file extension and then open it up, we get an image of a totem with the ciphertext <br>
-![[Pasted image 20240623223346.png]]
+![image](https://github.com/BipinRajC/CTF-Writeups/assets/112572356/045f0292-274b-47ed-b553-1666d685fb9a) <br>
 
 now we have secret key - `westminster` so vigenere decode it and we get the flag <br> 
+
 > FLAG - **rvcectf{christ0ph3rnol4n_gen1u5}**
 ---
 
