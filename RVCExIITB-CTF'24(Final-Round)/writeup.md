@@ -146,7 +146,7 @@ we get the flag in 3 parts in the commits 3,4 and 5 <br>
 
 ### _5. Crack the Vault_
 
-##### _Category - Miscellaneous
+##### _Category - Miscellaneous_
 >Author - Bipin Raj
 
 We are given an encrypted file which is a `mountable disk` and `Veracrypt` is mentioned, it is a free open-source utility for on-the-fly encryption (mainly for disks and partitions) and partial password is given as well - `shady****1` <br>
